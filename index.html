@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ruleta de la Misericordia - Diseño Moderno</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Fuentes ultra modernas -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.15);
+            --glass-border: rgba(255, 255, 255, 0.4);
+            --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+        }
+
+        /* Barra de Scroll Creativa */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, #3b82f6, #8b5cf6, #06b6d4);
+            border-radius: 10px;
+            border: 3px solid #0f172a; /* Crea un efecto de padding */
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(to bottom, #60a5fa, #a855f7, #22d3ee);
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            margin: 0;
+            overflow-x: hidden;
+            overflow-y: auto;
+            background-color: #0f172a; /* Fondo oscuro base para que brillen los colores */
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 40px 0; /* Espacio extra arriba y abajo */
+            box-sizing: border-box;
+        }
+
+        /* Mesh Gradient Background (Orbes de luz) */
+        .bg-orb {
+            position: fixed; /* Cambiado a fixed para que no se mueva al hacer scroll */
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.8;
+            animation: orbFloat 20s infinite alternate ease-in-out;
+            z-index: -2;
+        }
+        .orb-1 { top: -10%; left: -10%; width: 50vw; height: 50vw; background: #3b82f6; } /* Azul */
+        .orb-2 { bottom: -20%; right: -10%; width: 60vw; height: 60vw; background: #8b5cf6; animation-delay: -5s; } /* Púrpura */
+        .orb-3 { top: 40%; left: 40%; width: 40vw; height: 40vw; background: #06b6d4; animation-delay: -10s; } /* Cian */
+
+        @keyframes orbFloat {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(10vw, -10vh) scale(1.2); }
+            100% { transform: translate(-5vw, 15vh) scale(0.9); }
+        }
+
+        /* Text Gradient Animation */
+        .text-gradient {
+            background: linear-gradient(to right, #60a5fa, #c084fc, #22d3ee, #60a5fa);
+            background-size: 300% auto;
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: shine 5s linear infinite;
+        }
+
+        @keyframes shine {
+            to { background-position: 300% center; }
+        }
+
+        /* Advanced Glassmorphism */
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow);
+            border-radius: 24px;
+        }
+
+        .glass-button {
+            background: linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0.05));
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-button::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.4), transparent);
+            transform: skewX(-20deg);
+            transition: 0.5s;
+        }
+
+        .glass-button:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            border-color: rgba(255,255,255,0.6);
+        }
+
+        .glass-button:hover::before {
+            left: 150%;
+        }
+
+        /* 3D Wheel Container */
+        .wheel-container {
+            position: relative;
+            width: 420px;
+            height: 420px;
+            margin-top: 30px;
+            filter: drop-shadow(0 30px 40px rgba(0,0,0,0.4));
+            perspective: 1200px;
+        }
+
+        canvas {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            transform: rotateX(15deg);
+            box-shadow: inset 0 0 20px rgba(255,255,255,0.5);
+        }
+
+        /* Ultra Modern Center Button (Crystal Orb) */
+        .center-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotateX(15deg);
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle at 30% 30%, #ffffff 0%, #e0f2fe 20%, #7dd3fc 60%, #0284c7 100%);
+            border-radius: 50%;
+            box-shadow: 
+                0 15px 35px rgba(0,0,0,0.4), 
+                inset 0 -10px 20px rgba(0,0,0,0.3), 
+                inset 0 15px 15px rgba(255,255,255,0.9),
+                0 0 20px rgba(56, 189, 248, 0.5);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            color: #0f172a;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            z-index: 10;
+            border: 3px solid rgba(255,255,255,0.7);
+            transition: all 0.2s;
+            animation: floatOrb 3s ease-in-out infinite;
+        }
+
+        @keyframes floatOrb {
+            0%, 100% { transform: translate(-50%, -50%) rotateX(15deg) translateY(0); }
+            50% { transform: translate(-50%, -50%) rotateX(15deg) translateY(-8px); box-shadow: 0 25px 40px rgba(0,0,0,0.3), inset 0 -10px 20px rgba(0,0,0,0.3), inset 0 15px 15px rgba(255,255,255,0.9), 0 0 40px rgba(56, 189, 248, 0.8); }
+        }
+
+        .center-button:active {
+            transform: translate(-50%, -50%) rotateX(15deg) scale(0.9) !important;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.4), inset 0 -2px 10px rgba(0,0,0,0.3), inset 0 5px 5px rgba(255,255,255,0.9) !important;
+        }
+
+        /* Modern Pointer */
+        .pointer {
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 45px;
+            background: linear-gradient(to bottom, #ffffff, #e2e8f0);
+            clip-path: polygon(50% 100%, 0 0, 100% 0);
+            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.5));
+            z-index: 20;
+        }
+        .pointer::after {
+            content: '';
+            position: absolute;
+            top: 2px; left: 2px; right: 2px; bottom: 10px;
+            background: linear-gradient(to bottom, #f8fafc, #cbd5e1);
+            clip-path: polygon(50% 100%, 0 0, 100% 0);
+        }
+
+        /* Floating 3D Emojis background */
+        .floating-emoji {
+            position: fixed; /* Cambiado a fixed para que floten siempre en pantalla */
+            font-size: 2.5rem;
+            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.3));
+            animation: float 8s ease-in-out infinite;
+            opacity: 0.8;
+            z-index: -1;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg) scale(1); }
+            50% { transform: translateY(-30px) rotate(15deg) scale(1.1); }
+        }
+
+        /* Modal Enhancements */
+        #modal {
+            transition: opacity 0.4s ease, visibility 0.4s;
+            backdrop-filter: blur(25px);
+        }
+        .modal-content {
+            transform: scale(0.7) translateY(50px);
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border: 1px solid rgba(255,255,255,0.5);
+            background: rgba(255, 255, 255, 0.75); /* Más opaco para leer mejor */
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+        
+        /* Scrollbar interno del modal */
+        .modal-content::-webkit-scrollbar {
+            width: 8px;
+        }
+        .modal-content::-webkit-scrollbar-thumb {
+            background: rgba(59, 130, 246, 0.6);
+            border-radius: 10px;
+        }
+
+        #modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        #modal.active .modal-content {
+            transform: scale(1) translateY(0);
+            opacity: 1;
+        }
+
+        .emoji-3d {
+            display: inline-block;
+            filter: drop-shadow(0 15px 20px rgba(0,0,0,0.3));
+            animation: float 4s ease-in-out infinite;
+        }
+
+        @media (max-width: 500px) {
+            .wheel-container { width: 340px; height: 340px; }
+            .center-button { width: 85px; height: 85px; font-size: 1rem; }
+            h1 { font-size: 2.5rem !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Background Orbs -->
+    <div class="bg-orb orb-1"></div>
+    <div class="bg-orb orb-2"></div>
+    <div class="bg-orb orb-3"></div>
+
+    <!-- Floating Background Emojis -->
+    <div class="floating-emoji" style="top: 15%; left: 8%; animation-delay: 0s;">🕊️</div>
+    <div class="floating-emoji" style="top: 25%; right: 12%; animation-delay: 1.5s; font-size: 3.5rem;">❤️‍🔥</div>
+    <div class="floating-emoji" style="bottom: 15%; left: 15%; animation-delay: 2.5s; font-size: 3rem;">🙌</div>
+    <div class="floating-emoji" style="bottom: 25%; right: 10%; animation-delay: 3.5s;">✨</div>
+    <div class="floating-emoji" style="top: 45%; left: 5%; animation-delay: 1s;">🫂</div>
+
+    <!-- Header -->
+    <div class="text-center z-10 px-4 mb-2 mt-4">
+        <h2 class="text-blue-300 font-semibold tracking-[0.3em] uppercase text-sm md:text-base mb-2 drop-shadow-md">
+            Retiro Espiritual
+        </h2>
+        <h1 class="text-5xl md:text-6xl font-black text-gradient drop-shadow-lg mb-4 leading-tight">
+            El Abrazo de <br/>la Misericordia
+        </h1>
+        <p class="text-white text-lg glass-panel inline-block px-8 py-3 shadow-lg font-light tracking-wide border-white/40">
+            Toca el centro para descubrir tu misión
+        </p>
+    </div>
+
+    <!-- Wheel Section -->
+    <div class="wheel-container">
+        <div class="pointer"></div>
+        <canvas id="wheelCanvas" width="800" height="800"></canvas>
+        <div class="center-button" id="spinBtn" onclick="spinWheel()">GIRAR</div>
+    </div>
+
+    <!-- Result Modal -->
+    <div id="modal" class="fixed inset-0 z-50 flex items-center justify-center opacity-0 invisible bg-black/60 px-4 py-6">
+        <div class="modal-content w-full max-w-lg p-6 md:p-8 text-center relative rounded-[2rem] shadow-2xl">
+            <!-- Close Button -->
+            <button onclick="closeModal()" class="absolute top-5 right-5 text-gray-400 hover:text-gray-900 bg-white/60 rounded-full w-10 h-10 flex items-center justify-center transition-all hover:scale-110 hover:bg-white shadow-sm">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 font-bold" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+            
+            <div id="modalEmoji" class="text-8xl mb-6 emoji-3d">💖</div>
+            
+            <h2 class="text-xs font-black text-blue-600 uppercase tracking-[0.25em] mb-3">Compromiso Asignado</h2>
+            <h3 id="modalTitle" class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-6 leading-tight">Título</h3>
+            
+            <div class="bg-white/60 backdrop-blur-md p-6 rounded-2xl mb-8 border border-white/50 shadow-inner">
+                <p id="modalDesc" class="text-gray-800 text-lg md:text-xl font-medium leading-relaxed text-left">
+                    Descripción del compromiso...
+                </p>
+            </div>
+            
+            <button onclick="downloadCommitment()" class="glass-button w-full py-4 px-6 rounded-2xl font-bold text-blue-900 flex items-center justify-center gap-3 text-xl border-2 border-white/60 text-white bg-gradient-to-r from-blue-500/80 to-purple-500/80 hover:from-blue-500 hover:to-purple-500">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                Descargar Tarjeta
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // 30 Acciones de Misericordia
+        const actions = [
+            { id: 1, emoji: "🤝", title: "El primer paso del perdón", desc: "Hoy, envía un mensaje o llama a esa persona con la que tuviste un desacuerdo reciente. No necesitas debatir quién tuvo la razón, simplemente pregúntale cómo está y rompe el hielo." },
+            { id: 2, emoji: "👂", title: "Escucha activa y profunda", desc: "Dedica al menos 15 minutos hoy para escuchar a alguien (tu pareja, hijo, amigo) sin interrumpir, sin emitir juicios y, sobre todo, sin revisar tu celular." },
+            { id: 3, emoji: "🫂", title: "El abrazo que sana", desc: "Da un abrazo prolongado (de al menos 8 segundos) y lleno de cariño a un familiar o amigo. El contacto sincero transmite la misericordia y el calor de Dios." },
+            { id: 4, emoji: "🥪", title: "Compartir el pan", desc: "Comparte tu almuerzo, invita un café o compra algo de comer para alguien que lo necesite, ya sea un compañero en apuros o alguien en la calle." },
+            { id: 5, emoji: "🙏", title: "Orar por quien te hizo daño", desc: "Toma 5 minutos en silencio para rezar por alguien que te haya lastimado o te caiga mal. Pídele a Dios que lo bendiga, sane sus heridas y lo llene de paz." },
+            { id: 6, emoji: "🗣️", title: "Palabras que edifican", desc: "Identifica a 3 personas en tu día y dales un cumplido sincero sobre su carácter o su trabajo. Que tus palabras sean hoy un bálsamo de afirmación." },
+            { id: 7, emoji: "🚦", title: "Paciencia en el asfalto", desc: "Practica la mansedumbre en el tráfico o en las filas. Cede el paso con una sonrisa, no toques la bocina por desesperación y respira profundo." },
+            { id: 8, emoji: "📞", title: "La llamada del consuelo", desc: "Llama a un enfermo, a un anciano o a alguien que sepas que vive solo. Tu voz y tu tiempo son un acto gigante de misericordia que alivia la soledad." },
+            { id: 9, emoji: "🧹", title: "Servicio oculto", desc: "Haz una tarea del hogar o de la oficina que no te corresponda, sin que nadie te lo pida y sin esperar reconocimiento. Hazlo como una ofrenda secreta a Dios." },
+            { id: 10, emoji: "🤐", title: "Ayuno de críticas", desc: "Comprométete a pasar las próximas 24 horas sin emitir una sola crítica, queja o chisme sobre nadie. Si vas a hablar, que sea solo para construir." },
+            { id: 11, emoji: "👕", title: "Desapego solidario", desc: "Revisa tu clóset hoy mismo y saca al menos dos prendas en excelente estado que ya no uses. Dónalas a una institución o persona que las necesite." },
+            { id: 12, emoji: "😊", title: "La sonrisa al servidor", desc: "Mira a los ojos y sonríe con gratitud al cajero, al mesero, al guardia o al personal de limpieza que te atienda hoy. Reconoce su dignidad humana." },
+            { id: 13, emoji: "🪑", title: "Ceder tu comodidad", desc: "Cede tu asiento en el transporte público, en la sala de espera, o dale tu lugar en la fila a alguien que luzca cansado o tenga mayor necesidad." },
+            { id: 14, emoji: "🙌", title: "Gratitud en la prueba", desc: "Haz una pausa y agradece a Dios por esa situación difícil que estás atravesando. Reconoce que Su misericordia también actúa en las pruebas para fortalecerte." },
+            { id: 15, emoji: "🕯️", title: "Oración por los difuntos", desc: "Ofrece un denario del rosario o una oración profunda por las almas del purgatorio, especialmente por aquellas que nadie recuerda. Es un acto de amor eterno." },
+            { id: 16, emoji: "❤️‍🩹", title: "Hombro para el triste", desc: "Si ves a alguien desanimado o triste, acércate. A veces no se necesitan consejos, solo decir: 'Aquí estoy contigo, no estás solo'." },
+            { id: 17, emoji: "📱", title: "Evangelización digital", desc: "Comparte hoy un mensaje de esperanza, un versículo bíblico o una reflexión positiva en tus redes sociales o estados, en lugar de contenido vacío." },
+            { id: 18, emoji: "🚫", title: "Freno a la queja", desc: "Cada vez que vayas a quejarte del clima, del trabajo o del cansancio, cámbialo por una frase de gratitud. Transforma tu mente con la alabanza." },
+            { id: 19, emoji: "🪙", title: "Limosna generosa y oculta", desc: "Da una limosna económica o material hoy, pero que te cueste un poco (no solo las sobras) y hazlo de manera que nadie más que Dios lo sepa." },
+            { id: 20, emoji: "🏳️", title: "Reconocer la propia falta", desc: "Identifica un error que hayas cometido recientemente (por pequeño que sea) y pide perdón abiertamente a quien afectaste. La humildad abre el corazón." },
+            { id: 21, emoji: "💡", title: "Enseñar al que no sabe", desc: "Comparte tus conocimientos. Ayuda a un compañero de trabajo con una tarea difícil o enseña con extrema paciencia algo a un familiar que no entienda." },
+            { id: 22, emoji: "🗑️", title: "Cuidar la casa común", desc: "Si ves basura en la calle, en el parque o en tu lugar de trabajo que tú no tiraste, recógela y bótala. Cuida la creación por amor al Creador." },
+            { id: 23, emoji: "🛡️", title: "Defensor del ausente", desc: "Si estás en un grupo donde empiezan a hablar mal de alguien que no está presente, cambia el tema amablemente o resalta una virtud de esa persona." },
+            { id: 24, emoji: "💌", title: "El mensaje sorpresa", desc: "Envía un mensaje de texto inesperado a tres personas diciéndoles cuánto las aprecias y por qué le das gracias a Dios por sus vidas." },
+            { id: 25, emoji: "🧘", title: "Soportar con paciencia", desc: "Hoy, cuando alguien cometa un error o haga algo que te irrite (un hábito molesto, una torpeza), guarda silencio, respira y ofrécelo por amor a Dios." },
+            { id: 26, emoji: "📵", title: "Desconexión para conectar", desc: "Apaga tu celular o déjalo en otra habitación durante la cena o almuerzo familiar. Presta el 100% de tu atención a las personas que Dios te ha dado." },
+            { id: 27, emoji: "🕊️", title: "Mensajero de paz", desc: "Si conoces a dos personas que están distanciadas, busca la forma de mediar o de hablarles bien del otro para sembrar reconciliación, nunca discordia." },
+            { id: 28, emoji: "📿", title: "Intercesión mundial", desc: "Dedica un tiempo de tu día para orar por las víctimas de la guerra, la violencia y la pobreza en el mundo. Abraza el dolor de la humanidad con tu oración." },
+            { id: 29, emoji: "💧", title: "Misericordia en los detalles", desc: "Sé amable con el medio ambiente hoy: ahorra agua, apaga luces innecesarias. Reconocer que todo es don de Dios es vivir en gratitud." },
+            { id: 30, emoji: "💖", title: "Misericordia contigo mismo", desc: "Perdónate por ese error del pasado que te sigue atormentando. Mírate hoy en el espejo y recuerda que eres infinitamente amado y perdonado por Dios." }
+        ];
+
+        const canvas = document.getElementById("wheelCanvas");
+        const ctx = canvas.getContext("2d");
+        let currentAngle = 0;
+        let isSpinning = false;
+        let selectedItem = null;
+
+        // Paleta de colores creativa con gradientes (pares de colores)
+        const colorPairs = [
+            ["#E0F7FA", "#80DEEA"],
+            ["#E8EAF6", "#9FA8DA"],
+            ["#F3E5F5", "#CE93D8"],
+            ["#FFF3E0", "#FFCC80"],
+            ["#E1F5FE", "#81D4FA"],
+            ["#FCE4EC", "#F48FB1"]
+        ];
+
+        function drawWheel() {
+            const numSlices = actions.length;
+            const sliceAngle = (2 * Math.PI) / numSlices;
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            const radius = canvas.width / 2;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            for (let i = 0; i < numSlices; i++) {
+                const angle = currentAngle + i * sliceAngle;
+                
+                // Draw slice
+                ctx.beginPath();
+                ctx.moveTo(centerX, centerY);
+                ctx.arc(centerX, centerY, radius, angle, angle + sliceAngle);
+                ctx.closePath();
+                
+                // Creatividad: Gradiente radial para cada porción
+                const [color1, color2] = colorPairs[i % colorPairs.length];
+                const grad = ctx.createRadialGradient(centerX, centerY, radius * 0.2, centerX, centerY, radius);
+                grad.addColorStop(0, color1);
+                grad.addColorStop(1, color2);
+                ctx.fillStyle = grad;
+                ctx.fill();
+                
+                // Borde suave entre porciones
+                ctx.lineWidth = 1.5;
+                ctx.strokeStyle = "rgba(255,255,255,0.9)";
+                ctx.stroke();
+
+                // Draw emoji & text
+                ctx.save();
+                ctx.translate(
+                    centerX + Math.cos(angle + sliceAngle / 2) * radius * 0.82,
+                    centerY + Math.sin(angle + sliceAngle / 2) * radius * 0.82
+                );
+                ctx.rotate(angle + sliceAngle / 2 + Math.PI / 2);
+                
+                // Sombra para el emoji (3D feel)
+                ctx.shadowColor = "rgba(0,0,0,0.3)";
+                ctx.shadowBlur = 5;
+                ctx.shadowOffsetY = 3;
+                ctx.font = "32px Arial";
+                ctx.textAlign = "center";
+                ctx.textBaseline = "middle";
+                ctx.fillText(actions[i].emoji, 0, -10);
+                
+                // Reset shadow para el texto
+                ctx.shadowColor = "transparent";
+                ctx.font = "bold 18px Outfit";
+                ctx.fillStyle = "#1e293b";
+                ctx.fillText(actions[i].id, 0, 25);
+                ctx.restore();
+            }
+
+            // Creatividad: Anillos concéntricos decorativos estilo mecánico/mágico
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius * 0.65, 0, 2 * Math.PI);
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = "rgba(255,255,255,0.6)";
+            ctx.setLineDash([8, 12]);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius * 0.35, 0, 2 * Math.PI);
+            ctx.lineWidth = 1;
+            ctx.strokeStyle = "rgba(255,255,255,0.4)";
+            ctx.stroke();
+
+            // Draw outer glass effect border
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius - 8, 0, 2 * Math.PI);
+            ctx.lineWidth = 16;
+            ctx.strokeStyle = "rgba(255,255,255,0.5)";
+            ctx.stroke();
+            
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius - 2, 0, 2 * Math.PI);
+            ctx.lineWidth = 4;
+            ctx.strokeStyle = "rgba(255,255,255,0.9)";
+            ctx.stroke();
+        }
+
+        function easeOutQuart(x) {
+            return 1 - Math.pow(1 - x, 4);
+        }
+
+        function spinWheel() {
+            if (isSpinning) return;
+            isSpinning = true;
+
+            // Más rápido: entre 3 y 4.5 segundos
+            const spinDuration = 3000 + Math.random() * 1500; 
+            const spinRevolutions = 4 + Math.random() * 3; 
+            const targetAngle = currentAngle + (spinRevolutions * 2 * Math.PI);
+            
+            let startTime = null;
+
+            function animateSpin(timestamp) {
+                if (!startTime) startTime = timestamp;
+                const elapsed = timestamp - startTime;
+                const progress = Math.min(elapsed / spinDuration, 1);
+                
+                const easeProgress = easeOutQuart(progress);
+                currentAngle = currentAngle + (targetAngle - currentAngle) * easeProgress;
+                
+                drawWheel();
+
+                if (progress < 1) {
+                    requestAnimationFrame(animateSpin);
+                } else {
+                    isSpinning = false;
+                    determineResult();
+                }
+            }
+            requestAnimationFrame(animateSpin);
+        }
+
+        function determineResult() {
+            const numSlices = actions.length;
+            const sliceAngle = (2 * Math.PI) / numSlices;
+            let normalizedAngle = currentAngle % (2 * Math.PI);
+            if (normalizedAngle < 0) normalizedAngle += 2 * Math.PI;
+
+            let winningIndex = -1;
+            const pointerAngle = 3 * Math.PI / 2; // Top
+
+            for (let i = 0; i < numSlices; i++) {
+                let startAngle = (normalizedAngle + i * sliceAngle) % (2 * Math.PI);
+                let endAngle = (startAngle + sliceAngle) % (2 * Math.PI);
+                
+                if (startAngle > endAngle) {
+                    if (pointerAngle >= startAngle || pointerAngle < endAngle) {
+                        winningIndex = i; break;
+                    }
+                } else {
+                    if (pointerAngle >= startAngle && pointerAngle < endAngle) {
+                        winningIndex = i; break;
+                    }
+                }
+            }
+
+            if(winningIndex !== -1) {
+                selectedItem = actions[winningIndex];
+                // Aparece súper rápido tras detenerse (200ms)
+                setTimeout(() => showModal(selectedItem), 200);
+            }
+        }
+
+        function showModal(item) {
+            document.getElementById('modalEmoji').innerText = item.emoji;
+            document.getElementById('modalTitle').innerText = item.title;
+            document.getElementById('modalDesc').innerText = item.desc;
+            document.getElementById('modal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.remove('active');
+        }
+
+        function wrapText(context, text, x, y, maxWidth, lineHeight) {
+            var words = text.split(' ');
+            var line = '';
+            for(var n = 0; n < words.length; n++) {
+                var testLine = line + words[n] + ' ';
+                var metrics = context.measureText(testLine);
+                var testWidth = metrics.width;
+                if (testWidth > maxWidth && n > 0) {
+                    context.fillText(line, x, y);
+                    line = words[n] + ' ';
+                    y += lineHeight;
+                }
+                else {
+                    line = testLine;
+                }
+            }
+            context.fillText(line, x, y);
+        }
+
+        // Generación de imagen ultra premium
+        function downloadCommitment() {
+            if (!selectedItem) return;
+
+            const offCanvas = document.createElement('canvas');
+            offCanvas.width = 1080;
+            offCanvas.height = 1350; // Formato Vertical (Instagram Portrait)
+            const ctxOff = offCanvas.getContext('2d');
+
+            // 1. Fondo Mesh Moderno
+            ctxOff.fillStyle = '#0f172a'; // Oscuro elegante
+            ctxOff.fillRect(0, 0, 1080, 1350);
+
+            // Crear gradientes radiales para simular orbes
+            function drawOrb(x, y, r, color) {
+                const grad = ctxOff.createRadialGradient(x, y, 0, x, y, r);
+                grad.addColorStop(0, color);
+                grad.addColorStop(1, 'transparent');
+                ctxOff.fillStyle = grad;
+                ctxOff.fillRect(0, 0, 1080, 1350);
+            }
+            
+            drawOrb(200, 200, 800, 'rgba(59, 130, 246, 0.5)'); // Azul
+            drawOrb(900, 1000, 900, 'rgba(168, 85, 247, 0.4)'); // Púrpura
+            drawOrb(800, 300, 600, 'rgba(6, 182, 212, 0.4)'); // Cian
+
+            // 2. Tarjeta Glassmorphism
+            ctxOff.shadowColor = 'rgba(0,0,0,0.3)';
+            ctxOff.shadowBlur = 50;
+            ctxOff.shadowOffsetY = 20;
+            
+            const x=80, y=120, w=920, h=1110, r=50;
+            ctxOff.fillStyle = 'rgba(255, 255, 255, 0.9)'; // Panel casi blanco
+            ctxOff.beginPath();
+            ctxOff.roundRect(x, y, w, h, r);
+            ctxOff.fill();
+
+            // Borde brillante interno
+            ctxOff.strokeStyle = 'rgba(255,255,255,1)';
+            ctxOff.lineWidth = 4;
+            ctxOff.stroke();
+
+            ctxOff.shadowColor = 'transparent';
+
+            // 3. Textos
+            ctxOff.textAlign = 'center';
+            
+            // Header
+            ctxOff.fillStyle = '#3b82f6';
+            ctxOff.font = 'bold 36px "Outfit", sans-serif';
+            ctxOff.letterSpacing = "5px"; // Simulate letter spacing
+            ctxOff.fillText('RETIRO ESPIRITUAL', 540, 240);
+            
+            ctxOff.font = 'black 65px "Outfit", sans-serif';
+            const gradientText = ctxOff.createLinearGradient(140, 0, 940, 0);
+            gradientText.addColorStop(0, '#2563eb');
+            gradientText.addColorStop(1, '#9333ea');
+            ctxOff.fillStyle = gradientText;
+            ctxOff.fillText('El Abrazo de la', 540, 320);
+            ctxOff.fillText('Misericordia', 540, 395);
+
+            // Separador
+            ctxOff.beginPath();
+            ctxOff.moveTo(440, 450);
+            ctxOff.lineTo(640, 450);
+            ctxOff.lineWidth = 6;
+            ctxOff.lineCap = "round";
+            ctxOff.strokeStyle = '#e2e8f0';
+            ctxOff.stroke();
+
+            // Emoji
+            ctxOff.font = '160px Arial';
+            ctxOff.shadowColor = "rgba(0,0,0,0.2)";
+            ctxOff.shadowBlur = 20;
+            ctxOff.shadowOffsetY = 10;
+            ctxOff.fillText(selectedItem.emoji, 540, 640);
+            ctxOff.shadowColor = "transparent";
+
+            // Título de la acción
+            ctxOff.fillStyle = '#0f172a';
+            ctxOff.font = 'bold 55px "Outfit", sans-serif';
+            wrapText(ctxOff, selectedItem.title, 540, 770, 780, 65);
+
+            // Descripción Box
+            ctxOff.fillStyle = '#f8fafc';
+            ctxOff.beginPath();
+            ctxOff.roundRect(140, 850, 800, 250, 30);
+            ctxOff.fill();
+            ctxOff.lineWidth = 2;
+            ctxOff.strokeStyle = '#e2e8f0';
+            ctxOff.stroke();
+
+            // Texto Descripción
+            ctxOff.fillStyle = '#334155';
+            ctxOff.font = '500 34px "Outfit", sans-serif';
+            wrapText(ctxOff, selectedItem.desc, 540, 915, 720, 50);
+
+            // Footer
+            ctxOff.fillStyle = '#94a3b8';
+            ctxOff.font = 'bold 28px "Outfit", sans-serif';
+            ctxOff.fillText(`ACCIÓN #` + selectedItem.id.toString().padStart(2, '0'), 540, 1175);
+
+            // Descargar
+            const link = document.createElement('a');
+            link.download = `Mi_Compromiso_${selectedItem.id}.png`;
+            link.href = offCanvas.toDataURL('image/png');
+            link.click();
+        }
+
+        // Font loading check to ensure correct rendering on canvas
+        document.fonts.ready.then(function () {
+            drawWheel();
+        });
+
+    </script>
+</body>
+</html>
