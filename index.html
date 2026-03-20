@@ -36,14 +36,34 @@
             overflow-x: hidden;
             overflow-y: auto;
             background-color: #0f172a; /* Fondo oscuro base para que brillen los colores */
-            min-height: 100vh;
+            /* Se añade la imagen de fondo con un filtro oscurecedor para buena lectura */
+            background-image: linear-gradient(to bottom, rgba(15, 23, 42, 0.5), rgba(15, 23, 42, 0.85)), url('https://images.unsplash.com/photo-1499209974431-9dddcece7f88?q=80&w=1920&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            min-height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            position: relative;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Contenedor principal que fuerza el formato vertical/móvil */
+        .mobile-container {
+            width: 100%;
+            max-width: 430px; /* Ancho máximo de un celular grande */
+            min-height: 100dvh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            padding: 20px 15px;
+            margin: 0 auto;
             position: relative;
-            padding: 40px 0; /* Espacio extra arriba y abajo */
-            box-sizing: border-box;
+            z-index: 10;
         }
 
         /* Mesh Gradient Background (Orbes de luz) */
@@ -118,22 +138,41 @@
             left: 150%;
         }
 
-        /* 3D Wheel Container */
+        /* 3D Wheel Container - Adaptativo para pantallas verticales */
         .wheel-container {
             position: relative;
-            width: 420px;
-            height: 420px;
-            margin-top: 30px;
-            filter: drop-shadow(0 30px 40px rgba(0,0,0,0.4));
+            width: 90vw;
+            max-width: 360px;
+            height: 90vw;
+            max-height: 360px;
+            margin: 20px 0;
             perspective: 1200px;
+        }
+
+        /* Agrupador 3D para dar profundidad a la ruleta y al botón */
+        .wheel-group {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transform: rotateX(25deg); /* Inclinación hacia atrás */
         }
 
         canvas {
             width: 100%;
             height: 100%;
             border-radius: 50%;
-            transform: rotateX(15deg);
-            box-shadow: inset 0 0 20px rgba(255,255,255,0.5);
+            /* Efecto de extrusión/grosor de disco 3D */
+            box-shadow: 
+                0 1px 0 #cbd5e1,
+                0 2px 0 #94a3b8,
+                0 3px 0 #64748b,
+                0 4px 0 #475569,
+                0 5px 0 #334155,
+                0 6px 0 #1e293b,
+                0 7px 0 #0f172a,
+                0 25px 35px rgba(0,0,0,0.7),
+                inset 0 0 20px rgba(255,255,255,0.6);
         }
 
         /* Ultra Modern Center Button (Crystal Orb) */
@@ -141,13 +180,14 @@
             position: absolute;
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%) rotateX(15deg);
+            /* Despegado del canvas hacia adelante usando translateZ */
+            transform: translate(-50%, -50%) translateZ(30px);
             width: 100px;
             height: 100px;
             background: radial-gradient(circle at 30% 30%, #ffffff 0%, #e0f2fe 20%, #7dd3fc 60%, #0284c7 100%);
             border-radius: 50%;
             box-shadow: 
-                0 15px 35px rgba(0,0,0,0.4), 
+                0 15px 35px rgba(0,0,0,0.5), 
                 inset 0 -10px 20px rgba(0,0,0,0.3), 
                 inset 0 15px 15px rgba(255,255,255,0.9),
                 0 0 20px rgba(56, 189, 248, 0.5);
@@ -167,26 +207,26 @@
         }
 
         @keyframes floatOrb {
-            0%, 100% { transform: translate(-50%, -50%) rotateX(15deg) translateY(0); }
-            50% { transform: translate(-50%, -50%) rotateX(15deg) translateY(-8px); box-shadow: 0 25px 40px rgba(0,0,0,0.3), inset 0 -10px 20px rgba(0,0,0,0.3), inset 0 15px 15px rgba(255,255,255,0.9), 0 0 40px rgba(56, 189, 248, 0.8); }
+            0%, 100% { transform: translate(-50%, -50%) translateZ(30px); }
+            50% { transform: translate(-50%, -50%) translateZ(45px); box-shadow: 0 25px 40px rgba(0,0,0,0.4), inset 0 -10px 20px rgba(0,0,0,0.3), inset 0 15px 15px rgba(255,255,255,0.9), 0 0 40px rgba(56, 189, 248, 0.8); }
         }
 
         .center-button:active {
-            transform: translate(-50%, -50%) rotateX(15deg) scale(0.9) !important;
-            box-shadow: 0 5px 10px rgba(0,0,0,0.4), inset 0 -2px 10px rgba(0,0,0,0.3), inset 0 5px 5px rgba(255,255,255,0.9) !important;
+            transform: translate(-50%, -50%) translateZ(10px) scale(0.95) !important;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.6), inset 0 -2px 10px rgba(0,0,0,0.5), inset 0 5px 5px rgba(255,255,255,0.9) !important;
         }
 
         /* Modern Pointer */
         .pointer {
             position: absolute;
-            top: -25px;
+            top: -15px;
             left: 50%;
             transform: translateX(-50%);
             width: 40px;
             height: 45px;
             background: linear-gradient(to bottom, #ffffff, #e2e8f0);
             clip-path: polygon(50% 100%, 0 0, 100% 0);
-            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.5));
+            filter: drop-shadow(0 8px 10px rgba(0,0,0,0.6));
             z-index: 20;
         }
         .pointer::after {
@@ -252,9 +292,9 @@
         }
 
         @media (max-width: 500px) {
-            .wheel-container { width: 340px; height: 340px; }
-            .center-button { width: 85px; height: 85px; font-size: 1rem; }
-            h1 { font-size: 2.5rem !important; }
+            .wheel-container { width: 85vw; height: 85vw; max-width: 320px; max-height: 320px; }
+            .center-button { width: 80px; height: 80px; font-size: 1rem; }
+            h1 { font-size: 2.2rem !important; }
         }
     </style>
 </head>
@@ -272,24 +312,36 @@
     <div class="floating-emoji" style="bottom: 25%; right: 10%; animation-delay: 3.5s;">✨</div>
     <div class="floating-emoji" style="top: 45%; left: 5%; animation-delay: 1s;">🫂</div>
 
-    <!-- Header -->
-    <div class="text-center z-10 px-4 mb-2 mt-4">
-        <h2 class="text-blue-300 font-semibold tracking-[0.3em] uppercase text-sm md:text-base mb-2 drop-shadow-md">
-            Retiro Espiritual
-        </h2>
-        <h1 class="text-5xl md:text-6xl font-black text-gradient drop-shadow-lg mb-4 leading-tight">
-            El Abrazo de <br/>la Misericordia
-        </h1>
-        <p class="text-white text-lg glass-panel inline-block px-8 py-3 shadow-lg font-light tracking-wide border-white/40">
-            Toca el centro para descubrir tu misión
-        </p>
-    </div>
+    <!-- Contenedor de la interfaz en formato celular -->
+    <div class="mobile-container">
+        
+        <!-- Header -->
+        <div class="text-center w-full px-2 mb-2 mt-2">
+            <h2 class="text-blue-300 font-semibold tracking-[0.2em] uppercase text-xs md:text-sm mb-2 drop-shadow-md">
+                Retiro Espiritual
+            </h2>
+            <h1 class="text-4xl md:text-5xl font-black text-gradient drop-shadow-lg mb-2 leading-tight">
+                El Abrazo de <br/>la Misericordia
+            </h1>
+        </div>
 
-    <!-- Wheel Section -->
-    <div class="wheel-container">
-        <div class="pointer"></div>
-        <canvas id="wheelCanvas" width="800" height="800"></canvas>
-        <div class="center-button" id="spinBtn" onclick="spinWheel()">GIRAR</div>
+        <!-- Wheel Section -->
+        <div class="wheel-container">
+            <div class="pointer"></div>
+            <!-- Nuevo agrupador 3D -->
+            <div class="wheel-group">
+                <canvas id="wheelCanvas" width="800" height="800"></canvas>
+                <div class="center-button" id="spinBtn" onclick="spinWheel()">GIRAR</div>
+            </div>
+        </div>
+
+        <!-- Instrucción inferior -->
+        <div class="text-center w-full mt-4">
+            <p class="text-white text-sm md:text-base glass-panel inline-block px-6 py-3 shadow-lg font-light tracking-wide border-white/40">
+                Toca el centro para descubrir tu misión
+            </p>
+        </div>
+
     </div>
 
     <!-- Result Modal -->
